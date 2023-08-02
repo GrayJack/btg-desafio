@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "btg-energy-challenge"
+version = "0.1.0"
+description = ""
+authors = ["Eric Shimizu Karbstein <eric.shimizu.karbstein@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+numpy = "1.25.1"
+pandas = "2.0.3"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.25.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
