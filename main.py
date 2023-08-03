@@ -47,9 +47,11 @@ def is_inside_contour(edges, lat: float, long: float) -> bool:
         #   - It is inside if the lat is before lat_zero
         #   - It is outside if the lat is before lat_zero
         #
+        # Obs.: `+ 0.00000001` is used to avoid division by zero
+        #
         # The calculation of the lat_zero and check the validity can be simplified by
         # the equation used below
-        cond2 = lat < lat1 + ((long - long1) / (long2 - long1)) * (lat2 - lat1)
+        cond2 = lat < lat1 + ((long - long1) / (long2 - long1 + 0.00000001)) * (lat2 - lat1)
 
         if cond1 and cond2:
             cnt += 1
@@ -58,7 +60,15 @@ def is_inside_contour(edges, lat: float, long: float) -> bool:
 
 
 def apply_contour(contour_df: pd.DataFrame, data_df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    contour_list = list(contour_df.itertuples(index=False, name=None))
+    list_edges = list(zip(contour_list, contour_list[1:] + contour_list[:1]))
+
+    inside_contour = []
+    for lat, long, val in data_df.itertuples(index=False, name=None):
+        if is_inside_contour(edges=list_edges, lat=lat, long=long):
+            inside_contour.append([lat, long, val])
+
+    return pd.DataFrame(inside_contour, columns=["lat", "long", "data_value"])
 
 
 def main() -> None:
