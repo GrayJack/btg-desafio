@@ -1,11 +1,14 @@
+from pathlib import Path
+from typing import Optional
+from shapely import Point, Polygon
+from pandas import DataFrame, Timestamp
 import pandas as pd
 import re
 import time
 from functools import wraps
-from shapely import Point, Polygon
 
 
-def read_data_file(file_path: str) -> pd.DataFrame:
+def read_data_file(file_path: str | Path) -> pd.DataFrame:
     with open(file_path, "r") as f:
         raw_file = f.readlines()
 
@@ -39,13 +42,53 @@ def apply_contour(contour_df: pd.DataFrame, data_df: pd.DataFrame) -> pd.DataFra
     return pd.DataFrame(inside_contour, columns=["lat", "long", "data_value"])
 
 
+def get_dates_from_eta_filename(filename: str) -> Optional[tuple[Timestamp, Timestamp]]:
+    if filename.startswith("ETA40_p"):
+        forecast_day = int(filename[7:9])
+        forecast_mon = int(filename[9:11])
+        forecast_yr = 2000 + int(filename[11:13])
+
+        forecasted_day = int(filename[14:16])
+        forecasted_mon = int(filename[16:18])
+        forecasted_yr = 2000 + int(filename[18:20])
+
+        forecast_date = Timestamp(year=forecast_yr, month=forecast_mon, day=forecast_day)
+        forecasted_date = Timestamp(year=forecasted_yr, month=forecasted_mon, day=forecasted_day)
+
+        return (forecast_date, forecasted_date)
+
+    return None
+
+
 def main() -> None:
     contour_df: pd.DataFrame = read_contour_file("PSATCMG_CAMARGOS.bln")
-    data_df: pd.DataFrame = read_data_file("forecast_files/ETA40_p011221a021221.dat")
-    contour_df: pd.DataFrame = apply_contour(contour_df=contour_df, data_df=data_df)
+    files = Path("forecast_files").glob("*.dat")
+    acumuladas = []
 
-    soma = contour_df["data_value"].sum()
-    print(f"Soma: {soma}")
+    for filepath in files:
+        timestamps = get_dates_from_eta_filename(filepath.name)
+        # ignore wrong files
+        if timestamps is None:
+            continue
+
+        forecast_date, forecasted_date = timestamps
+
+        data_df = read_data_file(filepath)
+        processed_df = apply_contour(contour_df, data_df)
+        acumulada = processed_df["data_value"].sum()
+
+        acumuladas.append([forecast_date, forecasted_date, acumulada])
+
+    acumuladas_df = DataFrame(
+        acumuladas,
+        columns=[
+            "forecast_date",
+            "forecasted_date",
+            "accumulated preciptation",
+        ],
+    )
+
+    print(acumuladas_df)
 
 
 if __name__ == "__main__":
