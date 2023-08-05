@@ -1,5 +1,7 @@
 # BTG Energy Challenge
-### Introdução
+
+## Introdução
+
 Trabalhando nos sistema da mesa de Energia do banco BTG Pactual, constantemente lidamos com dados de precipitação, tanto previsto como observado.
 A informação de quanto choveu ou quanto choverá em determinado lugar é dada por uma malha de coordenadas
 (latitude [lat] e longitude [long]) e uma terceira variável que é a precipitação diária acumulada naquele ponto.
@@ -31,8 +33,8 @@ forecast_date   forecasted_date     data_value
 01/12/2021      07/12/2021          3.2
 ```
 
-
 ### O desafio
+
 O desafio consiste em responder a seguinte pergunta: **Qual é a previsão de precipitação ACUMULADA dada pelo modelo ETA no dia 01/12/2021 para a região de escoamento da usina Hidrelétrica Camargos (bacia do rio Grande)?**
 
 ![Contorno de Camargos [Grande]](Contour_Camargos_Grande.png "Contorno de Carmargos")
@@ -42,5 +44,10 @@ apresente graficamente a resposta para a pergunta.
 
 
 ### Resalvas
+
 - É permitido a utilização de bibliotecas extras
 - A entrega do desafio deve ser feita por GIT. Responda o email com o link do seu repositório.
+
+## Plotagen resultante
+
+![Resultado](result.png "Resultado")
