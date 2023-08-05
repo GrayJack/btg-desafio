@@ -88,14 +88,16 @@ def main() -> None:
 
     print(acumuladas_df)
 
-    acumuladas_df.loc[:, ["forecasted_date", "accumulated preciptation"]].plot.line(
+    ax = acumuladas_df.loc[:, ["forecasted_date", "accumulated preciptation"]].plot.line(
         y="accumulated preciptation",
         x="forecasted_date",
         xlabel="Forecasted Date",
         ylabel="Accumulated Preciptation (mm)",
         title="Expected Accumulated Preciptation for Camargos - Bacia Grande",
         legend=False,
+        linewidth=4,
     )
+    ax.grid(True, linewidth=0.25)
 
 
 if __name__ == "__main__":

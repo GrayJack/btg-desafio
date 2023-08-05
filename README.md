@@ -42,7 +42,6 @@ O desafio consiste em responder a seguinte pergunta: **Qual é a previsão de pr
 Modifique o arquivo `main.py` para fazer o "recorte" dos dados de precipitação (para **todos** os dias previstos pelo modelo) e
 apresente graficamente a resposta para a pergunta.
 
-
 ### Resalvas
 
 - É permitido a utilização de bibliotecas extras
