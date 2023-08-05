@@ -4,8 +4,6 @@ from shapely import Point, Polygon
 from pandas import DataFrame, Timestamp
 import pandas as pd
 import re
-import time
-from functools import wraps
 
 
 def read_data_file(file_path: str | Path) -> pd.DataFrame:
@@ -89,6 +87,15 @@ def main() -> None:
     )
 
     print(acumuladas_df)
+
+    acumuladas_df.loc[:, ["forecasted_date", "accumulated preciptation"]].plot.line(
+        y="accumulated preciptation",
+        x="forecasted_date",
+        xlabel="Forecasted Date",
+        ylabel="Accumulated Preciptation (mm)",
+        title="Expected Accumulated Preciptation for Camargos - Bacia Grande",
+        legend=False,
+    )
 
 
 if __name__ == "__main__":
